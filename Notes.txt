@@ -1,0 +1,59 @@
+## To Do ##
+(y) Create field Wind direction in Reading
+(y) Create fields Wind Chill and Wind Compass in Station
+(y) Create conversion methods for the fields
+    (-) Improvement: Refactor conversion methods to return two values for e.g. beaufortScale and beaufortLabel
+(y) Display the new fields on the Dashboard
+    (-) Improvement: Reformat wind chill. Currently, If 6.80 -> Displays 6.8
+(y) Change Dashboard to shows station list (Playlist9b)
+(y) Add button to open each station (Playlist10b)
+    (y) Add routes for accessing station
+    (y) Add delete button to remove readings
+    (y) Add button to create new readings
+(y) Add button to create new Station
+    (-) Handle errors with new stations having null values upon creation
+(-) Create Github repository
+
+
+
+## NOTES ##
+<div class="item">Feels like ${_station.getLastReading()?.getWindChill()}</div>
+<div class="item">Feels like ${_station.getLastReading()?.getWindChill()?.round(1)}</div>
+
+cardreadings.html
+<section class"ui segment">
+	<div class="ui four column grid">
+		<div class="column">
+			<div class="ui segment">
+				<p class="header">Weather</p>
+			</div>
+		</div>
+		<div class="column">
+			<div class="ui segment">
+				<p class="header">Wind</p>
+				<p>${latestReading.code}</p>
+			</div>
+		</div>
+
+
+dashboard.html
+#{list items: stations, as: 'station'}
+<section class="ui segment">
+	<h2 class="header">
+		<a href="/stations/${station.id}">${station.name}</a>
+	</h2>
+	#{cardreadings station: station/}
+	#{listreadings station: station/}
+</section>
+#{/list}
+#{addstation /}
+
+
+To handle possible null values through the play framework is to add a question mark in the view after the object, variable or method call.
+So in your case it would be ${newestReading?.code} or ${newestReading?.code?}
+As Ignas mentioned, after a new station is created, there are no readings yet so the variable is null.
+Not sure if this will get you sorted but it might be worth a try.
+Edit:
+Source:
+In Expressions: ${…} section
+https://www.playframework.com/documentation/1.2.5/templates
